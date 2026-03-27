@@ -122,3 +122,25 @@ terraform apply tfplan
 ```
 
 Ao final, use o output `alb_dns_name` para acessar o app.
+
+### Alternativa simples: EC2 dedicada
+
+Se você preferir começar mais rápido, use a estrutura em `infra/terraform-ec2`.
+
+Ela cria uma EC2 nova e dedicada para o TravelGuide, instala Docker via user data e sobe o container automaticamente.
+
+```bash
+cd infra/terraform-ec2
+cp terraform.tfvars.example terraform.tfvars
+
+# Edite o terraform.tfvars e preencha principalmente:
+# - aws_region
+# - key_name (opcional, mas recomendado)
+# - container_image (URI da imagem no ECR)
+
+terraform init
+terraform plan -out tfplan
+terraform apply tfplan
+```
+
+Use o output `app_url` para abrir a aplicação.
