@@ -25,6 +25,10 @@ const DEFAULT_FORM: Omit<TravelFormValues, "language" | "provider"> = {
   fixedOrder: false,
   pace: "balanced",
   avoidLongTransfers: true,
+  accommodationType: "either",
+  accommodationLocationPriority: "",
+  includeReviews: false,
+  reviewFocus: "",
   interests: "",
   mustVisit: "",
   avoidAreas: "",
@@ -322,6 +326,57 @@ export default function HomePage() {
                   />
                   {t.fields.avoidLongTransfers}
                 </label>
+              </div>
+
+              <div className="field">
+                <label htmlFor="accommodationType">{t.fields.accommodationType}</label>
+                <select
+                  id="accommodationType"
+                  name="accommodationType"
+                  value={form.accommodationType}
+                  onChange={handleField}
+                >
+                  {Object.entries(t.accommodationTypes).map(([k, v]) => (
+                    <option key={k} value={k}>{v}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="field">
+                <label htmlFor="accommodationLocationPriority">{t.fields.accommodationLocationPriority}</label>
+                <input
+                  id="accommodationLocationPriority"
+                  name="accommodationLocationPriority"
+                  type="text"
+                  value={form.accommodationLocationPriority}
+                  onChange={handleField}
+                  placeholder={t.placeholders.accommodationLocationPriority}
+                />
+              </div>
+
+              <div className="field full checkline">
+                <label htmlFor="includeReviews">
+                  <input
+                    id="includeReviews"
+                    name="includeReviews"
+                    type="checkbox"
+                    checked={form.includeReviews}
+                    onChange={handleField}
+                  />
+                  {t.fields.includeReviews}
+                </label>
+              </div>
+
+              <div className="field full">
+                <label htmlFor="reviewFocus">{t.fields.reviewFocus}</label>
+                <input
+                  id="reviewFocus"
+                  name="reviewFocus"
+                  type="text"
+                  value={form.reviewFocus}
+                  onChange={handleField}
+                  placeholder={t.placeholders.reviewFocus}
+                />
               </div>
 
               <div className="field full">

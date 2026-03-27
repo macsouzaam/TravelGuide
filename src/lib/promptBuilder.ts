@@ -82,6 +82,21 @@ const paceDescriptions: Record<string, { "pt-BR": string; en: string }> = {
   },
 };
 
+const accommodationDescriptions: Record<string, { "pt-BR": string; en: string }> = {
+  hotel: {
+    "pt-BR": "Hotel",
+    en: "Hotel",
+  },
+  airbnb: {
+    "pt-BR": "Airbnb",
+    en: "Airbnb",
+  },
+  either: {
+    "pt-BR": "Tanto faz",
+    en: "Either",
+  },
+};
+
 function normalizeDestinations(form: TravelFormValues): string[] {
   const list = form.destinations
     .split(",")
@@ -108,6 +123,7 @@ export function buildPrompt(form: TravelFormValues): string {
   const budget = budgetDescriptions[form.budget]?.[lang] ?? form.budget;
   const transportMode = transportDescriptions[form.transportMode]?.[lang] ?? form.transportMode;
   const pace = paceDescriptions[form.pace]?.[lang] ?? form.pace;
+  const accommodation = accommodationDescriptions[form.accommodationType]?.[lang] ?? form.accommodationType;
   const destinations = normalizeDestinations(form);
   const mainDestination = destinations[0] ?? form.destination;
   const destinationList = destinations.join(" | ");
@@ -137,6 +153,10 @@ PREFERÊNCIA DE TRANSPORTE ENTRE CIDADES: ${form.intercityTransportPreference}
 ORDEM DOS DESTINOS É FIXA: ${fixedOrder}
 RITMO DA VIAGEM: ${pace}
 EVITAR DESLOCAMENTOS LONGOS: ${avoidLongTransfers}
+TIPO DE HOSPEDAGEM: ${accommodation}
+PRIORIDADE DE LOCALIZAÇÃO DA HOSPEDAGEM: ${form.accommodationLocationPriority || "não informado"}
+INCLUIR REVIEWS: ${form.includeReviews ? "Sim" : "Não"}
+${form.reviewFocus ? `FOCO DOS REVIEWS: ${form.reviewFocus}` : ""}
 ${form.interests ? `INTERESSES: ${form.interests}` : ""}
 ${form.mustVisit ? `LUGARES OBRIGATÓRIOS: ${form.mustVisit}` : ""}
 ${form.avoidAreas ? `ÁREAS A EVITAR: ${form.avoidAreas}` : ""}
@@ -152,6 +172,10 @@ INSTRUÇÕES:
 - Se mobilidade for a pé, priorize atrações próximas no mesmo bairro/região por bloco do dia.
 - Se mobilidade for transporte público, inclua passes, linhas-chave e estações centrais quando útil.
 - Se mobilidade incluir carro alugado, traga alertas de pedágio, estacionamento e trecho ideal para dirigir.
+- Sugira 2 a 4 melhores regiões para hospedagem no destino (ou por destino), explicando prós e contras para hotel e/ou Airbnb conforme preferência.
+- Para cada região sugerida, cite nível de conveniência para transporte, segurança e acesso a atrações.
+- Quando fizer sentido, sugira perfis de hospedagem (econômico, conforto, premium) com faixa de preço por noite.
+- Se INCLUIR REVIEWS for "Sim", adicione uma seção opcional de reviews resumidos de cidade, pontos turísticos, museus, hospedagens e restaurantes com notas médias estimadas (escala 1-5) e breve justificativa.
 - Finalize com até 3 dicas gerais para a viagem.
 - Escreva em português claro e amigável.`;
   }
@@ -172,6 +196,10 @@ PREFERRED INTERCITY TRANSPORT: ${form.intercityTransportPreference}
 DESTINATION ORDER IS FIXED: ${fixedOrder}
 TRIP PACE: ${pace}
 AVOID LONG TRANSFERS: ${avoidLongTransfers}
+ACCOMMODATION TYPE: ${accommodation}
+ACCOMMODATION LOCATION PRIORITY: ${form.accommodationLocationPriority || "not specified"}
+INCLUDE REVIEWS: ${form.includeReviews ? "Yes" : "No"}
+${form.reviewFocus ? `REVIEW FOCUS: ${form.reviewFocus}` : ""}
 ${form.interests ? `INTERESTS: ${form.interests}` : ""}
 ${form.mustVisit ? `MUST-VISIT PLACES: ${form.mustVisit}` : ""}
 ${form.avoidAreas ? `AREAS TO AVOID: ${form.avoidAreas}` : ""}
@@ -187,6 +215,10 @@ INSTRUCTIONS:
 - If mobility is walking, keep activities geographically close in each time block.
 - If mobility is public transport, include passes, key lines, and central stations when useful.
 - If mobility includes rental car, include toll, parking, and best driving windows.
+- Suggest 2 to 4 best accommodation areas (overall or per destination), explaining pros/cons for hotel and/or Airbnb based on user preference.
+- For each suggested area, include convenience level for transit, safety, and access to attractions.
+- When useful, suggest accommodation profiles (budget, comfort, premium) with nightly price range.
+- If INCLUDE REVIEWS is "Yes", add an optional section with concise reviews for city, sightseeing spots, museums, accommodations, and restaurants with estimated average ratings (1-5) and brief rationale.
 - Finish with up to 3 general travel tips.
 - Write in clear, friendly English.`;
 }

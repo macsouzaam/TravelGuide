@@ -13,6 +13,9 @@ export function buildMockItinerary(form: TravelFormValues): string {
   const routeLine = isPt
     ? `Destinos planejados: ${destinations.join(" -> ")}`
     : `Planned destinations: ${destinations.join(" -> ")}`;
+  const stayLine = isPt
+    ? `Hospedagem preferida: ${form.accommodationType} | prioridade de localização: ${form.accommodationLocationPriority || "não informado"}`
+    : `Preferred stay: ${form.accommodationType} | location priority: ${form.accommodationLocationPriority || "not specified"}`;
 
   if (isPt) {
     return `📍 Roteiro de exemplo para ${form.destination} — ${form.days} dia(s)
@@ -22,6 +25,7 @@ Este é um roteiro simulado (modo local). Configure sua chave de API para recebe
 
 ${mobilityLine}
 ${routeLine}
+${stayLine}
 
 🗓 Dia 1 — Chegada e primeiras impressões
   🌅 Manhã
@@ -59,6 +63,23 @@ ${
   • Ordem fixa de destinos: ${form.fixedOrder ? "sim" : "não"}
   • Evitar deslocamentos longos: ${form.avoidLongTransfers ? "sim" : "não"}
 
+🏨 Sugestões de hospedagem
+  • Região central: melhor para deslocamentos rápidos e vida noturna.
+  • Região residencial com metrô: melhor equilíbrio entre custo e conforto.
+  • Dica: compare hotel e Airbnb nessas duas regiões antes de reservar.
+
+${
+  form.includeReviews
+    ? `⭐ Reviews resumidos (simulados)
+  • Cidade: 4.6/5 (limpa, boa estrutura turística)
+  • Museus principais: 4.7/5 (excelente curadoria)
+  • Hotéis/Airbnb: 4.4/5 (boa relação localização x conforto)
+  • Restaurantes locais: 4.5/5 (ótima gastronomia)
+  • Foco: ${form.reviewFocus || "geral"}
+`
+    : ""
+}
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Modo de demonstração local — sem chamada real à API.`;
   }
@@ -70,6 +91,7 @@ This is a simulated itinerary (local mode). Configure your API key to receive a 
 
 ${mobilityLine}
 ${routeLine}
+${stayLine}
 
 🗓 Day 1 — Arrival & first impressions
   🌅 Morning
@@ -106,6 +128,23 @@ ${
   • Intercity/international transport preference: ${form.intercityTransportPreference}
   • Fixed destination order: ${form.fixedOrder ? "yes" : "no"}
   • Avoid long transfers: ${form.avoidLongTransfers ? "yes" : "no"}
+
+🏨 Accommodation suggestions
+  • Central area: best for quick transfers and nightlife.
+  • Residential area near metro: best balance between cost and comfort.
+  • Tip: compare hotel and Airbnb in both areas before booking.
+
+${
+  form.includeReviews
+    ? `⭐ Condensed reviews (mock)
+  • City: 4.6/5 (clean, good tourist infrastructure)
+  • Main museums: 4.7/5 (excellent curation)
+  • Hotels/Airbnb: 4.4/5 (good location/comfort balance)
+  • Local restaurants: 4.5/5 (strong food scene)
+  • Focus: ${form.reviewFocus || "general"}
+`
+    : ""
+}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Local demo mode — no real API call made.`;

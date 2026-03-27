@@ -6,6 +6,7 @@ export type DrivingComfort = "none" | "short_only" | "long_drives_ok";
 export type RouteStrategy = "hub_and_spoke" | "linear_route" | "user_defined_order";
 export type IntercityTransport = "train" | "flight" | "bus" | "car" | "mixed";
 export type TravelPace = "slow" | "balanced" | "fast";
+export type AccommodationType = "hotel" | "airbnb" | "either";
 
 export type TravelFormValues = {
   destination: string;
@@ -22,6 +23,10 @@ export type TravelFormValues = {
   fixedOrder: boolean;
   pace: TravelPace;
   avoidLongTransfers: boolean;
+  accommodationType: AccommodationType;
+  accommodationLocationPriority: string;
+  includeReviews: boolean;
+  reviewFocus: string;
   interests: string;
   mustVisit: string;
   avoidAreas: string;

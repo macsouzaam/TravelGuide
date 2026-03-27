@@ -41,6 +41,10 @@ export const copy = {
       fixedOrder: "Ordem dos destinos é obrigatória",
       pace: "Ritmo da viagem",
       avoidLongTransfers: "Evitar deslocamentos longos",
+      accommodationType: "Tipo de hospedagem",
+      accommodationLocationPriority: "Prioridade de localização da hospedagem",
+      includeReviews: "Incluir reviews e notas médias",
+      reviewFocus: "Foco dos reviews (opcional)",
       interests: "Interesses",
       mustVisit: "Lugares obrigatórios",
       avoidAreas: "Áreas a evitar",
@@ -49,6 +53,8 @@ export const copy = {
     placeholders: {
       destination: "Ex.: Lisboa, Portugal",
       destinations: "Ex.: Lisboa, Porto, Madri, Barcelona",
+      accommodationLocationPriority: "Ex.: central, perto de metrô, região tranquila",
+      reviewFocus: "Ex.: museus e restaurantes, hotéis e bairros",
       interests: "Museus, gastronomia, mirantes, praias...",
       mustVisit: "Ex.: Torre de Belém, Sagrada Família",
       avoidAreas: "Ex.: áreas com muita subida, regiões de balada",
@@ -101,6 +107,11 @@ export const copy = {
       balanced: "Equilibrado",
       fast: "Intenso",
     },
+    accommodationTypes: {
+      hotel: "Hotel",
+      airbnb: "Airbnb",
+      either: "Tanto faz",
+    },
     footer:
       "Execução local primeiro. Próximo passo natural: persistir histórico, autenticar usuário e publicar em AWS com secrets por ambiente.",
     providerBadge: "Modo local",
@@ -148,6 +159,10 @@ export const copy = {
       fixedOrder: "Destination order is fixed",
       pace: "Trip pace",
       avoidLongTransfers: "Avoid long transfers",
+      accommodationType: "Accommodation type",
+      accommodationLocationPriority: "Accommodation location priority",
+      includeReviews: "Include reviews and average ratings",
+      reviewFocus: "Review focus (optional)",
       interests: "Interests",
       mustVisit: "Must-visit places",
       avoidAreas: "Areas to avoid",
@@ -156,6 +171,8 @@ export const copy = {
     placeholders: {
       destination: "Example: Lisbon, Portugal",
       destinations: "Example: Lisbon, Porto, Madrid, Barcelona",
+      accommodationLocationPriority: "Example: central, near metro, quiet area",
+      reviewFocus: "Example: museums and restaurants, hotels and neighborhoods",
       interests: "Museums, food, viewpoints, beaches...",
       mustVisit: "Example: Belem Tower, Sagrada Familia",
       avoidAreas: "Example: steep areas, heavy nightlife districts",
@@ -207,6 +224,11 @@ export const copy = {
       slow: "Slow",
       balanced: "Balanced",
       fast: "Fast",
+    },
+    accommodationTypes: {
+      hotel: "Hotel",
+      airbnb: "Airbnb",
+      either: "Either",
     },
     footer:
       "Local execution first. Natural next step: persist history, authenticate users, and publish to AWS with per-environment secrets.",
