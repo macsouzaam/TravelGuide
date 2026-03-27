@@ -1,0 +1,27 @@
+project_name   = "travelguide"
+environment    = "prod"
+aws_region     = "us-east-1"
+app_port       = 3000
+desired_count  = 1
+cpu            = 512
+memory         = 1024
+
+# If empty, Terraform uses the ECR repo URL with :latest
+container_image = ""
+
+# Optional: use specific VPC/subnets. Leave empty to use default VPC.
+vpc_id     = ""
+subnet_ids = []
+
+assign_public_ip = true
+
+plain_env = {
+  NODE_ENV = "production"
+}
+
+# Map env var => Secrets Manager ARN
+secret_arns = {
+  OPENAI_API_KEY = "arn:aws:secretsmanager:us-east-1:123456789012:secret:travelguide/openai"
+  GEMINI_API_KEY = "arn:aws:secretsmanager:us-east-1:123456789012:secret:travelguide/gemini"
+  CLOUD_API_KEY  = "arn:aws:secretsmanager:us-east-1:123456789012:secret:travelguide/cloud"
+}

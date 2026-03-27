@@ -77,3 +77,48 @@ src/
 3. **Deploy**: AWS Amplify (Next.js SSR nativo) ou ECS + ALB.
 4. **Secrets**: AWS Secrets Manager → variáveis de ambiente injetadas no container.
 5. **Cache de prompts**: ElastiCache Redis para evitar chamadas repetidas à API de LLM.
+
+---
+
+## Deploy AWS com Terraform
+
+A estrutura Terraform está em `infra/terraform` e cria:
+
+- ECR (repositório de imagem)
+- ECS Fargate (cluster, task definition e service)
+- ALB (Application Load Balancer)
+- CloudWatch Logs
+- IAM roles para execução de task
+
+### 1) Build e push da imagem para ECR
+
+```bash
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.us-east-1.amazonaws.com
+
+docker build -t travelguide:latest .
+docker tag travelguide:latest <aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/travelguide-prod:latest
+docker push <aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/travelguide-prod:latest
+```
+
+### 2) Configurar variáveis Terraform
+
+```bash
+cd infra/terraform
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Preencha:
+
+- `aws_region`
+- `container_image` (URI da imagem no ECR)
+- `secret_arns` com ARNs do Secrets Manager para as chaves de LLM
+
+### 3) Aplicar infraestrutura
+
+```bash
+terraform init
+terraform plan -out tfplan
+terraform apply tfplan
+```
+
+Ao final, use o output `alb_dns_name` para acessar o app.
