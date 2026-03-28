@@ -294,12 +294,15 @@ export default function HomePage() {
               </div>
 
               <div className="field">
-                <label htmlFor="pace">{t.fields.pace}</label>
-                <select id="pace" name="pace" value={form.pace} onChange={handleField}>
+                <label>{t.fields.pace}</label>
+                <div style={{ display: "flex", gap: "16px", marginTop: "8px" }}>
                   {Object.entries(t.paceOptions).map(([k, v]) => (
-                    <option key={k} value={k}>{v}</option>
+                    <label key={k} style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}>
+                      <input type="radio" name="pace" value={k} checked={form.pace === k} onChange={handleField} />
+                      {v}
+                    </label>
                   ))}
-                </select>
+                </div>
               </div>
 
               <div className="field full checkline">
