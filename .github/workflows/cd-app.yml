@@ -107,7 +107,7 @@ jobs:
             --document-name "AWS-RunShellScript" \
             --parameters "commands=[\
               \"PREV_IMAGE=\\$(docker inspect --format='{{.Config.Image}}' travelguide 2>/dev/null || true)\",\
-              \"echo \\\"\\${PREV_IMAGE}\\\" > /tmp/travelguide-prev-image.txt\",\
+              \"echo \\\"\${PREV_IMAGE}\\\" > /tmp/travelguide-prev-image.txt\",\
               \"aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${{ steps.aws-account.outputs.account_id }}.dkr.ecr.${AWS_REGION}.amazonaws.com\",\
               \"docker pull ${IMAGE_SHA}\",\
               \"docker stop travelguide || true\",\
@@ -174,12 +174,12 @@ jobs:
             --document-name "AWS-RunShellScript" \
             --parameters "commands=[\
               \"PREV_IMAGE=\\$(cat /tmp/travelguide-prev-image.txt 2>/dev/null || true)\",\
-              \"if [ -z \\\"\\${PREV_IMAGE}\\\" ]; then echo 'Sem imagem anterior para rollback'; exit 1; fi\",\
+              \"if [ -z \\\"\${PREV_IMAGE}\\\" ]; then echo 'Sem imagem anterior para rollback'; exit 1; fi\",\
               \"aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${{ steps.aws-account.outputs.account_id }}.dkr.ecr.${AWS_REGION}.amazonaws.com\",\
-              \"docker pull \\\"\\${PREV_IMAGE}\\\"\",\
+              \"docker pull \\\"\${PREV_IMAGE}\\\"\",\
               \"docker stop travelguide || true\",\
               \"docker rm travelguide || true\",\
-              \"docker run -d --name travelguide --restart unless-stopped --env-file /etc/travelguide.env -p 80:3000 \\\"\\${PREV_IMAGE}\\\"\"\
+              \"docker run -d --name travelguide --restart unless-stopped --env-file /etc/travelguide.env -p 80:3000 \\\"\${PREV_IMAGE}\\\"\"\
             ]" \
             --query "Command.CommandId" \
             --output text)
