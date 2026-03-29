@@ -52,11 +52,15 @@ jobs:
         id: target-instance
         run: |
           set -euo pipefail
-          INSTANCE_ID=$(aws ec2 describe-instances \
+          INSTANCE_JSON=$(aws ec2 describe-instances \
             --region "$AWS_REGION" \
             --filters "Name=tag:Name,Values=${INSTANCE_NAME_TAG}" "Name=instance-state-name,Values=running,pending" \
-            --query "Reservations[].Instances[].InstanceId" \
-            --output text | awk '{print $1}')
+            --query "Reservations[].Instances[].[InstanceId,PublicIpAddress,PublicDnsName]" \
+            --output text | head -1)
+
+          INSTANCE_ID=$(echo "$INSTANCE_JSON" | awk '{print $1}')
+          PUBLIC_IP=$(echo "$INSTANCE_JSON" | awk '{print $2}')
+          PUBLIC_DNS=$(echo "$INSTANCE_JSON" | awk '{print $3}')
 
           if [ -z "$INSTANCE_ID" ] || [ "$INSTANCE_ID" = "None" ]; then
             echo "No running instance found with tag Name=${INSTANCE_NAME_TAG}"
@@ -64,6 +68,8 @@ jobs:
           fi
 
           echo "instance_id=$INSTANCE_ID" >> "$GITHUB_OUTPUT"
+          echo "app_url=http://${PUBLIC_IP}" >> "$GITHUB_OUTPUT"
+          echo "Instance: $INSTANCE_ID | IP: $PUBLIC_IP | DNS: $PUBLIC_DNS"
 
       - name: Deploy via SSM
         env:
@@ -111,3 +117,21 @@ jobs:
               --output text
             exit 1
           fi
+
+      - name: Health check
+        env:
+          APP_URL: ${{ steps.target-instance.outputs.app_url }}
+        run: |
+          set -euo pipefail
+          echo "Aguardando app iniciar em $APP_URL ..."
+          for i in $(seq 1 12); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$APP_URL" || echo "000")
+            echo "  tentativa $i/12 → HTTP $STATUS"
+            if [ "$STATUS" = "200" ]; then
+              echo "Health check OK — app respondendo em $APP_URL"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Health check FAILED — app não respondeu com 200 após 2 minutos"
+          exit 1
