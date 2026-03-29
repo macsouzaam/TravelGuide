@@ -35,6 +35,26 @@ const DEFAULT_FORM: Omit<TravelFormValues, "language" | "provider"> = {
   notes: "",
 };
 
+type OptionGroupProps = {
+  name: string;
+  options: Record<string, string>;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+function OptionGroup({ name, options, value, onChange }: OptionGroupProps) {
+  return (
+    <div className="option-grid">
+      {Object.entries(options).map(([key, label]) => (
+        <label key={key} className="option-chip">
+          <input type="radio" name={name} value={key} checked={value === key} onChange={onChange} />
+          <span>{label}</span>
+        </label>
+      ))}
+    </div>
+  );
+}
+
 export default function HomePage() {
   const [lang, setLang] = useState<AppLanguage>("pt-BR");
   const [provider, setProvider] = useState<LlmProvider>("gemini");
@@ -45,9 +65,7 @@ export default function HomePage() {
 
   const t = copy[lang];
 
-  function handleField(
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) {
+  function handleField(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value, type } = e.target;
     const checked = type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
 
@@ -207,49 +225,54 @@ export default function HomePage() {
                 />
               </div>
 
-              <div className="field">
-                <label htmlFor="style">{t.fields.style}</label>
-                <select id="style" name="style" value={form.style} onChange={handleField}>
-                  {Object.entries(t.styles).map(([k, v]) => (
-                    <option key={k} value={k}>{v}</option>
-                  ))}
-                </select>
+              <div className="field full">
+                <label>{t.fields.style}</label>
+                <OptionGroup
+                  name="style"
+                  options={t.styles}
+                  value={form.style}
+                  onChange={handleField}
+                />
               </div>
 
-              <div className="field">
-                <label htmlFor="budget">{t.fields.budget}</label>
-                <select id="budget" name="budget" value={form.budget} onChange={handleField}>
-                  {Object.entries(t.budgets).map(([k, v]) => (
-                    <option key={k} value={k}>{v}</option>
-                  ))}
-                </select>
+              <div className="field full">
+                <label>{t.fields.budget}</label>
+                <OptionGroup
+                  name="budget"
+                  options={t.budgets}
+                  value={form.budget}
+                  onChange={handleField}
+                />
               </div>
 
-              <div className="field">
-                <label htmlFor="travelers">{t.fields.travelers}</label>
-                <select id="travelers" name="travelers" value={form.travelers} onChange={handleField}>
-                  {Object.entries(t.travelersOptions).map(([k, v]) => (
-                    <option key={k} value={k}>{v}</option>
-                  ))}
-                </select>
+              <div className="field full">
+                <label>{t.fields.travelers}</label>
+                <OptionGroup
+                  name="travelers"
+                  options={t.travelersOptions}
+                  value={form.travelers}
+                  onChange={handleField}
+                />
               </div>
 
-              <div className="field">
-                <label htmlFor="transportMode">{t.fields.transportMode}</label>
-                <select id="transportMode" name="transportMode" value={form.transportMode} onChange={handleField}>
-                  {Object.entries(t.transportModes).map(([k, v]) => (
-                    <option key={k} value={k}>{v}</option>
-                  ))}
-                </select>
+              <div className="field full">
+                <label>{t.fields.transportMode}</label>
+                <OptionGroup
+                  name="transportMode"
+                  options={t.transportModes}
+                  value={form.transportMode}
+                  onChange={handleField}
+                />
               </div>
 
-              <div className="field">
-                <label htmlFor="drivingComfort">{t.fields.drivingComfort}</label>
-                <select id="drivingComfort" name="drivingComfort" value={form.drivingComfort} onChange={handleField}>
-                  {Object.entries(t.drivingComfortOptions).map(([k, v]) => (
-                    <option key={k} value={k}>{v}</option>
-                  ))}
-                </select>
+              <div className="field full">
+                <label>{t.fields.drivingComfort}</label>
+                <OptionGroup
+                  name="drivingComfort"
+                  options={t.drivingComfortOptions}
+                  value={form.drivingComfort}
+                  onChange={handleField}
+                />
               </div>
 
               <div className="field">
@@ -265,44 +288,29 @@ export default function HomePage() {
                 />
               </div>
 
-              <div className="field">
-                <label htmlFor="multiDestinationStrategy">{t.fields.multiDestinationStrategy}</label>
-                <select
-                  id="multiDestinationStrategy"
+              <div className="field full">
+                <label>{t.fields.multiDestinationStrategy}</label>
+                <OptionGroup
                   name="multiDestinationStrategy"
+                  options={t.multiDestinationStrategies}
                   value={form.multiDestinationStrategy}
                   onChange={handleField}
-                >
-                  {Object.entries(t.multiDestinationStrategies).map(([k, v]) => (
-                    <option key={k} value={k}>{v}</option>
-                  ))}
-                </select>
+                />
               </div>
 
-              <div className="field">
-                <label htmlFor="intercityTransportPreference">{t.fields.intercityTransportPreference}</label>
-                <select
-                  id="intercityTransportPreference"
+              <div className="field full">
+                <label>{t.fields.intercityTransportPreference}</label>
+                <OptionGroup
                   name="intercityTransportPreference"
+                  options={t.intercityTransportOptions}
                   value={form.intercityTransportPreference}
                   onChange={handleField}
-                >
-                  {Object.entries(t.intercityTransportOptions).map(([k, v]) => (
-                    <option key={k} value={k}>{v}</option>
-                  ))}
-                </select>
+                />
               </div>
 
-              <div className="field">
+              <div className="field full">
                 <label>{t.fields.pace}</label>
-                <div style={{ display: "flex", gap: "16px", marginTop: "8px" }}>
-                  {Object.entries(t.paceOptions).map(([k, v]) => (
-                    <label key={k} style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}>
-                      <input type="radio" name="pace" value={k} checked={form.pace === k} onChange={handleField} />
-                      {v}
-                    </label>
-                  ))}
-                </div>
+                <OptionGroup name="pace" options={t.paceOptions} value={form.pace} onChange={handleField} />
               </div>
 
               <div className="field full checkline">
@@ -331,18 +339,14 @@ export default function HomePage() {
                 </label>
               </div>
 
-              <div className="field">
-                <label htmlFor="accommodationType">{t.fields.accommodationType}</label>
-                <select
-                  id="accommodationType"
+              <div className="field full">
+                <label>{t.fields.accommodationType}</label>
+                <OptionGroup
                   name="accommodationType"
+                  options={t.accommodationTypes}
                   value={form.accommodationType}
                   onChange={handleField}
-                >
-                  {Object.entries(t.accommodationTypes).map(([k, v]) => (
-                    <option key={k} value={k}>{v}</option>
-                  ))}
-                </select>
+                />
               </div>
 
               <div className="field">
@@ -457,7 +461,14 @@ export default function HomePage() {
           )}
 
           {result ? (
-            <pre className="result-content">{result.itinerary}</pre>
+            <>
+              <pre className="result-content">{result.itinerary}</pre>
+
+              <details className="prompt-viewer">
+                <summary>{lang === "pt-BR" ? "Ver prompt enviado ao modelo" : "View prompt sent to model"}</summary>
+                <pre className="prompt-content">{result.prompt}</pre>
+              </details>
+            </>
           ) : (
             !error && (
               <p className="result-placeholder">{t.resultPlaceholder}</p>

@@ -83,7 +83,8 @@ describe("POST /api/itinerary", () => {
     });
 
     it("retorna 422 quando days está ausente", async () => {
-      const { days: _, ...withoutDays } = validForm;
+      const withoutDays = { ...validForm } as Partial<TravelFormValues>;
+      delete withoutDays.days;
       const req = makeRequest(withoutDays);
       const res = await POST(req);
       expect(res.status).toBe(422);

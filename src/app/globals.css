@@ -244,6 +244,34 @@ button {
   resize: vertical;
 }
 
+.option-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.option-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(31, 27, 22, 0.14);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.option-chip input[type="radio"] {
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+.option-chip:has(input[type="radio"]:checked) {
+  background: rgba(15, 118, 110, 0.14);
+  border-color: rgba(15, 118, 110, 0.45);
+}
+
 .checkline label {
   display: inline-flex;
   align-items: center;
@@ -289,6 +317,35 @@ button {
   max-height: 62vh;
   overflow-y: auto;
   padding-right: 6px;
+}
+
+.prompt-viewer {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.prompt-viewer summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 12px 14px;
+  font-weight: 600;
+  color: var(--primary-strong);
+}
+
+.prompt-viewer summary::-webkit-details-marker {
+  display: none;
+}
+
+.prompt-content {
+  margin: 0;
+  padding: 0 14px 14px;
+  white-space: pre-wrap;
+  line-height: 1.55;
+  max-height: 34vh;
+  overflow-y: auto;
+  color: var(--muted);
 }
 
 .result-placeholder {
