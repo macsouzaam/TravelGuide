@@ -118,7 +118,7 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero-grid">
           <div>
-            <span className="eyebrow">✈️ {t.eyebrow}</span>
+            <span className="eyebrow">🧭 {t.eyebrow}</span>
             <h1>{t.heroTitle}</h1>
             <p>{t.heroSubtitle}</p>
             <div className="hero-stats">
@@ -149,7 +149,7 @@ export default function HomePage() {
                   className={lang === "en" ? "active" : ""}
                   onClick={() => setLang("en")}
                 >
-                  🇬🇧 English
+                  🇬🇧 English (US)
                 </button>
               </div>
             </div>
