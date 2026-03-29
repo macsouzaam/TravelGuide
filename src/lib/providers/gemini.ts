@@ -8,6 +8,7 @@ export async function callGemini(prompt: string): Promise<string> {
   if (!apiKey) throw new Error("GEMINI_API_KEY is not set.");
 
   const model = process.env.GEMINI_MODEL ?? "gemini-1.5-flash";
+  const maxOutputTokens = Number(process.env.GEMINI_MAX_OUTPUT_TOKENS ?? "4096");
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
   const res = await fetch(url, {
@@ -15,7 +16,7 @@ export async function callGemini(prompt: string): Promise<string> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.8, maxOutputTokens: 2048 },
+      generationConfig: { temperature: 0.8, maxOutputTokens },
     }),
   });
 

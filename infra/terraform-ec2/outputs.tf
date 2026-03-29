@@ -4,8 +4,8 @@ output "instance_id" {
 }
 
 output "public_ip" {
-  value       = aws_instance.app.public_ip
-  description = "Public IP"
+  value       = aws_eip.app.public_ip
+  description = "Elastic IP (fixed public IP)"
 }
 
 output "public_dns" {
@@ -14,6 +14,6 @@ output "public_dns" {
 }
 
 output "app_url" {
-  value       = "http://${aws_instance.app.public_dns}"
-  description = "TravelGuide URL"
+  value       = "http://${aws_eip.app.public_ip}"
+  description = "TravelGuide URL (stable)"
 }

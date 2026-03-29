@@ -19,19 +19,7 @@ variable "aws_region" {
 variable "instance_type" {
   type        = string
   description = "EC2 instance type"
-  default     = "t3.small"
-}
-
-variable "key_name" {
-  type        = string
-  description = "Existing EC2 key pair name for SSH"
-  default     = ""
-}
-
-variable "allowed_ssh_cidr" {
-  type        = string
-  description = "CIDR allowed to SSH into instance"
-  default     = "0.0.0.0/0"
+  default     = "t3.micro"
 }
 
 variable "vpc_id" {

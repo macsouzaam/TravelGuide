@@ -52,6 +52,11 @@ resource "aws_iam_role_policy_attachment" "ecr_read" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
+resource "aws_iam_role_policy_attachment" "ssm_access" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "${local.name_prefix}-ec2-profile"
   role = aws_iam_role.ec2_role.name
@@ -70,14 +75,6 @@ resource "aws_security_group" "ec2_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    description = "SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.allowed_ssh_cidr]
-  }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -92,7 +89,6 @@ resource "aws_instance" "app" {
   subnet_id              = local.subnet_id
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
-  key_name               = var.key_name != "" ? var.key_name : null
 
   associate_public_ip_address = true
 
@@ -124,4 +120,19 @@ resource "aws_instance" "app" {
     Project     = var.project_name
     Environment = var.environment
   }
+}
+
+resource "aws_eip" "app" {
+  domain = "vpc"
+
+  tags = {
+    Name        = "${local.name_prefix}-eip"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
+
+resource "aws_eip_association" "app" {
+  instance_id   = aws_instance.app.id
+  allocation_id = aws_eip.app.id
 }

@@ -1,13 +1,7 @@
 project_name   = "travelguide"
 environment    = "prod"
 aws_region     = "us-east-1"
-instance_type  = "t3.small"
-
-# Nome do key pair já existente na AWS (opcional, mas recomendado)
-key_name = ""
-
-# Restrinja para seu IP no formato x.x.x.x/32
-allowed_ssh_cidr = "0.0.0.0/0"
+instance_type  = "t3.micro"
 
 # Opcional: deixe vazio para usar default VPC/subnet
 vpc_id    = ""
@@ -17,8 +11,11 @@ app_port  = 3000
 host_port = 80
 
 # Obrigatório: imagem já publicada no ECR
-container_image = "123456789012.dkr.ecr.us-east-1.amazonaws.com/travelguide-prod:latest"
+container_image = "596055752742.dkr.ecr.us-east-1.amazonaws.com/travelguide:latest"
 
 plain_env = {
-  NODE_ENV = "production"
+NODE_ENV = "production"
+GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE"
+GEMINI_MODEL = "gemini-2.0-flash-latest"
+
 }

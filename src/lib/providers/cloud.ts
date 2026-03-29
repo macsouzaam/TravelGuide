@@ -7,6 +7,7 @@
 export async function callCloud(prompt: string): Promise<string> {
   const apiKey = process.env.CLOUD_API_KEY;
   const apiUrl = process.env.CLOUD_API_URL ?? "https://api.anthropic.com/v1/messages";
+  const maxTokens = Number(process.env.CLOUD_MAX_TOKENS ?? "4096");
 
   if (!apiKey) throw new Error("CLOUD_API_KEY is not set.");
 
@@ -25,14 +26,14 @@ export async function callCloud(prompt: string): Promise<string> {
   const body = isAnthropic
     ? JSON.stringify({
         model: process.env.CLOUD_MODEL ?? "claude-3-5-haiku-latest",
-        max_tokens: 2048,
+        max_tokens: maxTokens,
         messages: [{ role: "user", content: prompt }],
       })
     : JSON.stringify({
         model: process.env.CLOUD_MODEL ?? "default",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.8,
-        max_tokens: 2048,
+        max_tokens: maxTokens,
       });
 
   const res = await fetch(apiUrl, { method: "POST", headers, body });

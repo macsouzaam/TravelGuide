@@ -6,6 +6,7 @@
 export async function callOpenAI(prompt: string): Promise<string> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error("OPENAI_API_KEY is not set.");
+  const maxTokens = Number(process.env.OPENAI_MAX_TOKENS ?? "4096");
 
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
@@ -17,7 +18,7 @@ export async function callOpenAI(prompt: string): Promise<string> {
       model: process.env.OPENAI_MODEL ?? "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.8,
-      max_tokens: 2048,
+      max_tokens: maxTokens,
     }),
   });
 
