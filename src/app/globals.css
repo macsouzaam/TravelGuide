@@ -300,6 +300,8 @@ button {
 
 .result-card {
   min-height: 420px;
+  display: flex;
+  flex-direction: column;
 }
 
 .result-header {
@@ -314,7 +316,8 @@ button {
   white-space: pre-wrap;
   line-height: 1.7;
   color: var(--text);
-  max-height: 62vh;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding-right: 6px;
 }
